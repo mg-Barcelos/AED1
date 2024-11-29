@@ -1,4 +1,4 @@
-//ex 1 ao 5
+//Para os exercícios de 1 a 5, por serem pequenos, criei um menu e os implementei todos em um único código.
 #include <stdio.h>
 
 void Numero_inteiro_imprimir(){
