@@ -1,5 +1,5 @@
-resoluçao em C
-
+//Problem
+//1.Two Sum
 int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     int i=0;
     while(i<numsSize-1){
