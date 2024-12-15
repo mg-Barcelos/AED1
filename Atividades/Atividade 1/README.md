@@ -14,7 +14,7 @@
 ##### Foram testados 2 exemplos. 
 
 ## Mudanças no código
-#### Foram feitas poucas mudanças no código feito em aula. Apesar de saber a lógica para resolver o problema me perdi na hora e teve coisas bobas que me esqueci.
+#### Foram feitas poucas mudanças no código feito em aula. Apesar de saber a lógica para resolver o problema me perdi na hora e teve que me esqueci.
 
 ##### Link para o vídeo:
 ###### <>
