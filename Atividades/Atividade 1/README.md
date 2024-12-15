@@ -11,13 +11,10 @@
 
 ### Sobre o problema:
 #### se é possível plantar um certo número de flores em um canteiro, respeitando restrições de proximidade.
-##### Foram testados 2 exemplos.
-###### Exemplos utilizados: 
-###### Ex. 1: Input: 
-###### Ex. 2: Input: 
+##### Foram testados 2 exemplos. 
 
 ## Mudanças no código
-#### Foram feitas poucas mudanças no código feito em aula. Apesar de saber a lógica para resolver o problema não consegui implementar. 
+#### Foram feitas poucas mudanças no código feito em aula. Apesar de saber a lógica para resolver o problema me perdi na hora e teve coisas bobas que me esqueci.
 
 ##### Link para o vídeo:
 ###### <>
