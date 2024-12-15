@@ -17,4 +17,4 @@
 #### Foram feitas poucas mudanças no código feito em aula. Apesar de saber a lógica para resolver o problema me perdi na hora e teve que me esqueci.
 
 ##### Link para o vídeo:
-###### <>
+###### <https://drive.google.com/drive/folders/1YskzHkV2NH-GgNccytdBmhEkHua9JNXo?usp=sharing>
