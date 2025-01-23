@@ -12,6 +12,13 @@ void liberar_lista(void* pBuffer);
 
 int main(){
   void* pBuffer = malloc (3* sizeof(void*) + 80);
-  *(void**) pBuffer = NULL;
-  *(void**)(pBuffer
-  *(void**)
+  *(void**) pBuffer = NULL; // head
+  *(void**)(pBuffer + (void*))=NULL;
+  *(void**)(pBuffer + 2* sizeof(void*))=NULL;
+
+    while(1){
+    pBuffer = menu(pBuffer);
+    }
+  free(pBuffer);
+  return 0;
+}
