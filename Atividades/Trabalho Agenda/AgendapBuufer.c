@@ -85,10 +85,31 @@ void* criar_no(void* pBuffer){
 void* adicionar(void* pBuffer){
     printf("\nNome:");
     scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)));
-    printf("\nNome:");
-    scanf(" %[^\n]"
-    printf("\nNome:");
+    printf("\nIdade:");
+    scanf(" %d",(int*)(pBuffer + 3 * sizeof(void*)+40));
+    printf("\nEmail:");
+    scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)+44));
+    getchar();
 
-        
+    void* novo_no = criar_no(pBuffer);
+    void* head = *(void**)pBuffer;
+    void* tail = *(void**)(pBuffer + sizeof(void*));
 
-    
+    if(head==NULL){
+    *(void**)pBuffer = novo_no; // Define o novo nó como head
+    *(void**)(pBuffer + sizeof(void*)) = novo_no;
+    printf("\nContato adicionado!\n");
+    getchar();
+    return pBuffer;
+}
+    *(void**)novo_no = NULL; // Next do novo nó aponta para NULL
+    *(void**)(novo_no + sizeof(void*)) = tail; // Prev do novo nó aponta para o tail atual
+    *(void**)tail = novo_no; // Tail atual aponta para o novo nó
+    *(void**)(pBuffer + sizeof(void*)) = novo_no; // Atualiza o tail no buffer principal
+
+    printf("\nContato adicionado!\n");
+    getchar();
+    return pBuffer;
+}
+
+void* adicionar(void* pBuffer){}
