@@ -112,4 +112,21 @@ void* adicionar(void* pBuffer){
     return pBuffer;
 }
 
-void* adicionar(void* pBuffer){}
+void* remover (void* pBuffer){
+    printf("\nNome para remover: ");
+    scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
+    getchar();
+
+    void* atual = *(void**)pBuffer; // Ponteiro para o head da lista
+
+    while (atual != NULL && strcmp((char*)(atual + 2 * sizeof(void*)), (char*)(pBuffer + 3 * sizeof(void*))) != 0) {
+        atual = *(void**)atual; // Avança para o próximo nó
+    }
+
+    if (atual == NULL) { // Se não encontrado
+        printf("\nContato nao encontrado!\n");
+        getchar();
+        return pBuffer;
+    }
+    aa
+}
