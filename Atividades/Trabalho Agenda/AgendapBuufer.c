@@ -72,3 +72,23 @@ void* menu(void* pBuffer) {
 
     return pBuffer;
 }
+void* criar_no(void* pBuffer){
+    *(void**)novo_no = NULL;
+    *(void**) (novo_no + sizeof (void*) ) = NULL;
+    //copia os dados de entra o nome, idade e o email
+    memcpy(novo_no + 2 * sizeof(void*), pBuffer + 3 * sizeof(void*),80);
+
+    return novo_no;
+}
+
+//funçao para adicionar uma pessoa na lista
+void* adicionar(void* pBuffer){
+    printf("\nNome:");
+    scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)));
+    printf("\nNome:");
+    scanf(" %[^\n]"
+    printf("\nNome:");
+
+        
+
+    
