@@ -22,3 +22,13 @@ int main(){
   free(pBuffer);
   return 0;
 }
+
+//menu
+void* menu(void* pBuffer){
+  system(CLEAR);
+    printf("=== AGENDA ===\n");
+    printf("=== AGENDA ===\n");
+    printf("=== AGENDA ===\n");
+    printf("=== AGENDA ===\n");
+    printf("=== AGENDA ===\n");
+    printf("=== AGENDA ===\n");
