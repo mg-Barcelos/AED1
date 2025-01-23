@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -128,5 +127,27 @@ void* remover (void* pBuffer){
         getchar();
         return pBuffer;
     }
-    aa
+    if (atual == *(void**)pBuffer) {
+        *(void**)pBuffer = *(void**)atual;
+        if (*(void**)atual != NULL) {
+            *(void**)(*(void**)atual + sizeof(void*)) = NULL; 
+        } else {
+            *(void**)(pBuffer + sizeof(void*)) = NULL; 
+        }
+    } 
+    // Caso especial: Remover o último nó
+    else if (atual == *(void**)(pBuffer + sizeof(void*))) {
+        *(void**)(*(void**)(atual + sizeof(void*)) + sizeof(void*)) = NULL; // Tail fica vazio
+        *(void**)(pBuffer + sizeof(void*)) = *(void**)(atual + sizeof(void*)); // Atualiza tail
+    } 
+    // Caso geral: Remover no meio
+    else {
+        *(void**)(*(void**)(atual + sizeof(void*)) + sizeof(void*)) = *(void**)atual;
+        *(void**)(*(void**)atual + sizeof(void*)) = *(void**)(atual + sizeof(void*));
+    }
+
+    free(atual); // Libera a memória do nó
+    printf("\nContato removido!\n");
+    getchar();
+    return pBuffer;
 }
