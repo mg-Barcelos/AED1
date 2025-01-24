@@ -151,3 +151,29 @@ void* remover (void* pBuffer){
     getchar();
     return pBuffer;
 }
+
+void* buscar (void* pBuffer){
+    printf("\nNome para Buscar: ");
+    scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
+    getchar();
+
+    void* atual = *(void**)pBuffer; // Ponteiro aponta pra head da lista
+
+    while(atual != NULL) {
+        if (strstr((char*)(atual + 2 * sizeof(void*)), (char*)(pBuffer + 3 * sizeof(void*))) != NULL) {
+            printf("\nContato encontrado:\n");
+            printf("\nNome %s\n", (char*)(atual + 2 * sizeof(void*)));
+            printf("\nIdade %d\n", *(int*)(atual + 2 * sizeof(void*)+40));
+            printf("\nNome %s\n", (char*)(atual + 2 * sizeof(void*)+44));
+            getchar();
+            return pBuffer;
+        }
+        atual = *(void**)atual;
+    }
+    printf("\nContato encontrado:\n");
+    getchar();
+    return pBuffer;
+}
+
+void* adicionar(void* pBuffer){}
+
