@@ -72,6 +72,7 @@ void* menu(void* pBuffer) {
     return pBuffer;
 }
 void* criar_no(void* pBuffer){
+     void* novo_no = malloc(2 * sizeof(void*) + 80);
     *(void**)novo_no = NULL;
     *(void**) (novo_no + sizeof (void*) ) = NULL;
     //copia os dados de entra o nome, idade e o email
