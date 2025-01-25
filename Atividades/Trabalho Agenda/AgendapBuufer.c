@@ -175,5 +175,62 @@ void* buscar (void* pBuffer){
     return pBuffer;
 }
 
-void* adicionar(void* pBuffer){}
+void* listar(void* pBuffer){
+    void* atual = *(void**)pBuffer;
+
+    if(atual == NULL){
+        printf("\n A LISTA ESTA VAZIA\n");
+        getchar();
+        return pBuffer;
+    }
+
+    int count=0;
+    void* temp = atual;
+    while (temp != NULL){
+        count++;
+        temp = *(void**)temp;
+    }
+    void** nos = malloc(count * sizeof(void*));
+    temp = atual;
+    for(int i =0;i<count;i++){
+        nos[i] = temp;
+        temp = *(void**)temp;//
+    }
+// Ordenar os ponteiros para os nós usando bubble sort com base nos nomes
+    for (int i = 0; i < count - 1; i++) {
+        for (int j = 0; j < count - i - 1; j++) {
+            char* nome1 = (char*)(nos[j] + 2 * sizeof(void*));
+            char* nome2 = (char*)(nos[j + 1] + 2 * sizeof(void*));
+            if (strcmp(nome1, nome2) > 0) {
+                void* tempNode = nos[j];
+                nos[j] = nos[j + 1];
+                nos[j + 1] = tempNode;
+            }
+        }
+    }
+    // Exibir os contatos em ordem alfabética
+    printf("\nLista de contatos:\n");
+    for (int i = 0; i < count; i++) {
+        printf("Nome: %s\n", (char*)(nos[i] + 2 * sizeof(void*)));
+        printf("Idade: %d\n", *(int*)(nos[i] + 2 * sizeof(void*) + 40));
+        printf("Email: %s\n", (char*)(nos[i] + 2 * sizeof(void*) + 44));
+        printf("----------------\n");
+    }
+
+    // Liberar a lista temporária
+    free(nos);
+
+    getchar();
+    return pBuffer;
+}
+
+void liberar_lista(void* pBuffer){
+    void* atual = *(void**)pBuffer;
+
+    while (atual != NULL){
+        void* temp = atual;
+        atual = *(void**)atual;
+        free(temp);
+    }
+}
 
