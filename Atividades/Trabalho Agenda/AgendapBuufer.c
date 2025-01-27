@@ -117,10 +117,12 @@ void* remover (void* pBuffer){
     scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
     getchar();
 
-    void* atual = *(void**)pBuffer; // Ponteiro para o head da lista
-
-    while (atual != NULL && strcmp((char*)(atual + 2 * sizeof(void*)), (char*)(pBuffer + 3 * sizeof(void*))) != 0) {
-        atual = *(void**)atual; // Avança para o próximo nó
+    void* atual = *(void**)pBuffer; // Head
+    void* tail = *(void**)(pBuffer + sizeof(void*));
+    
+    while (atual != NULL && strcmp((char*)(atual + 2 * sizeof(void*)), 
+           (char*)(pBuffer + 3 * sizeof(void*))) != 0) {
+        atual = *(void**)atual;
     }
 
     if (atual == NULL) { // Se não encontrado
@@ -128,23 +130,27 @@ void* remover (void* pBuffer){
         getchar();
         return pBuffer;
     }
-    if (atual == *(void**)pBuffer) {
-        *(void**)pBuffer = *(void**)atual;
-        if (*(void**)atual != NULL) {
-            *(void**)(*(void**)atual + sizeof(void*)) = NULL; 
-        } else {
-            *(void**)(pBuffer + sizeof(void*)) = NULL; 
-        }
-    } 
-    // Caso especial: Remover o último nó
-    else if (atual == *(void**)(pBuffer + sizeof(void*))) {
-        *(void**)(*(void**)(atual + sizeof(void*)) + sizeof(void*)) = NULL; // Tail fica vazio
-        *(void**)(pBuffer + sizeof(void*)) = *(void**)(atual + sizeof(void*)); // Atualiza tail
-    } 
-    // Caso geral: Remover no meio
+if (atual == *(void**)pBuffer && atual == tail) {
+        *(void**)pBuffer = NULL;  // Head = NULL
+        *(void**)(pBuffer + sizeof(void*)) = NULL;  // Tail = NULL
+    }
+    // Case 2: First node
+    else if (atual == *(void**)pBuffer) {
+        *(void**)pBuffer = *(void**)atual;  // Head = atual->next
+        *(void**)(*(void**)pBuffer + sizeof(void*)) = NULL;  // New head->prev = NULL
+    }
+    // Case 3: Last node
+    else if (atual == tail) {
+        void* prev = *(void**)(atual + sizeof(void*));
+        *(void**)prev = NULL;  // prev->next = NULL
+        *(void**)(pBuffer + sizeof(void*)) = prev;  // tail = prev
+    }
+    // Case 4: Middle node
     else {
-        *(void**)(*(void**)(atual + sizeof(void*)) + sizeof(void*)) = *(void**)atual;
-        *(void**)(*(void**)atual + sizeof(void*)) = *(void**)(atual + sizeof(void*));
+        void* prev = *(void**)(atual + sizeof(void*));
+        void* next = *(void**)atual;
+        *(void**)prev = next;  // prev->next = next
+        *(void**)(next + sizeof(void*)) = prev;  // next->prev = prev
     }
 
     free(atual); // Libera a memória do nó
