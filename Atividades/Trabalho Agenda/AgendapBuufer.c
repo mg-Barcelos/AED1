@@ -113,6 +113,11 @@ void* adicionar(void* pBuffer){
 }
 
 void* remover (void* pBuffer){
+    if (*(void**)pBuffer == NULL) {
+    printf("\nA lista esta vazia! Nenhum contato para remover.\n");
+    getchar();
+    return pBuffer;
+}
     printf("\nNome para remover: ");
     scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
     getchar();
@@ -160,6 +165,11 @@ if (atual == *(void**)pBuffer && atual == tail) {
 }
 
 void* buscar (void* pBuffer){
+    if (*(void**)pBuffer == NULL) {
+    printf("\nA lista esta vazia! Nenhum contato para buscar.\n");
+    getchar();
+    return pBuffer;
+}
     printf("\nNome para Buscar: ");
     scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
     getchar();
