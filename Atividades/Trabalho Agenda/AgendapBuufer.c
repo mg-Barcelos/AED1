@@ -109,7 +109,7 @@ void* adicionar(void* pBuffer){
         }
     }
 
-    // vai converter a string para inteiro manualmente
+    // funçao para coverter string para int
     int idade = 0;
     for (int i = 0; idadeInput[i] != '\0'; i++) {
         //ira calcula o valor da idade mutiplicando por 10
@@ -212,12 +212,15 @@ void* buscar (void* pBuffer){
     printf("\nA lista esta vazia! Nenhum contato para buscar.\n");
     getchar();
     return pBuffer;
+        //funçao verifica se a lista esta vazia se tiver exibi a mensagem
 }
     printf("\nNome para Buscar: ");
     scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
     getchar();
+    //funçao pro usuario digigtar o nome
 
-    void* atual = *(void**)pBuffer; // Ponteiro aponta pra head da lista
+    void* atual = *(void**)pBuffer; // Ponteiro atual vai ser começado apontado para o primeiro da lista o (head)
+    
 
     while(atual != NULL) {
         if (strstr((char*)(atual + 2 * sizeof(void*)), (char*)(pBuffer + 3 * sizeof(void*))) != NULL) {
@@ -227,10 +230,12 @@ void* buscar (void* pBuffer){
             printf("\nNome %s\n", (char*)(atual + 2 * sizeof(void*)+44));
             getchar();
             return pBuffer;
+            /*a qui o while entra em laço de repetiçao ele vai percorrera lista apatir do head 
+            vai ir ate encontra o no com o nome que a pessoa quer procurar*/
         }
         atual = *(void**)atual;
         
-        if (atual == NULL) { // Se não encontrado
+        if (atual == NULL) { // Se não encontrado caso o laço nao ache o contato
         printf("\nContato nao encontrado!\n");
         getchar();
         return pBuffer;
@@ -248,21 +253,25 @@ void* listar(void* pBuffer){
         printf("\n lista vazia\n");
         getchar();
         return pBuffer;
+        //ponteiro aula aponta pro head da lista,a lista esta vazia entao retorna
     }
-
+/*abaixo o ponteiro temp é usado pra pecorrer alista iniciado pelo head o count o contator para cada no visitado
+quanto o temp chega no final da lista ele se tornal null, o count tem o nuemro total de nos da lista*/
     int count=0;
     void* temp = atual;
     while (temp != NULL){
         count++;
         temp = *(void**)temp;
     }
-    void** nos = malloc(count * sizeof(void*));
+    void** nos = malloc(count * sizeof(void*));//array dinamica chama nos para armazenar todo os nos da lista
     temp = atual;
     for(int i =0;i<count;i++){
         nos[i] = temp;
-        temp = *(void**)temp;//
+        temp = *(void**)temp;
+        /*aqui o ponteiro temp é reinicializado para o head,entra no for o pont temp é armazenado no nos[i] do array
+        e por fim o temp é atualizado para o proximo no acessado por *(void**)temp.*/
     }
-// aqui faz uma ordenaçao dos ponteiros para os nos usando um dos "melhores" algoritmos de ordenaçao o bubble sort com base nos nomes para lista em ordem alfabetica
+// aqui faz uma ordenaçao dos ponteiros para os nos, usando um dos "melhores" algoritmos de ordenaçao o bubble sort com base nos nomes para lista em ordem alfabetica
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
             char* nome1 = (char*)(nos[j] + 2 * sizeof(void*));
@@ -282,8 +291,7 @@ void* listar(void* pBuffer){
         printf("----------------\n");
     }
 
-    // Liberar a lista temporária
-    free(nos);
+    free(nos); //os nos é liberado para nao ter vazamento de memoria
 
     getchar();
     return pBuffer;
