@@ -74,11 +74,17 @@ void* menu(void* pBuffer) {
     return pBuffer;
 }
 void* criar_no(void* pBuffer){
-     void* novo_no = malloc(2 * sizeof(void*) + 80);// utilizamos aqui pra cria o no temporario 
-    *(void**)novo_no = NULL;
-    *(void**) (novo_no + sizeof (void*) ) = NULL;
+     void* novo_no = malloc(2 * sizeof(void*) + 80);
+    // utilizamos aqui pra cria o no temporario 
+    *(void**)novo_no = NULL; 
+    //aqui o ponteiro começa next do novo no como null (ou seja nao vai apontar pra nenhum outro no no momento)
+    *(void**) (novo_no + sizeof (void*) ) = NULL; 
+    // mesma coisa vai começa o ponteiro prev do no como null (entao nao vai ter nada antes)
     memcpy(novo_no + 2 * sizeof(void*), pBuffer + 3 * sizeof(void*),80);
-
+    /*aqui vai fazer nada mais que copia os dados que sao (nome,idade,email) do buffer para
+    um novo no, os dados comecam a partir do pBuffer + 3 * sizeof(void*) é onde os dados estao armazenados*/
+    /*valor 80 é o nuemro de bytes apra ser copiado que sao o tamanho dos dados o valor 80 é assumindo que o nome tenha 39 carectes(40bytes)
+    idade nuemro inteiro(4bytes) e email assumindo que tenha 35 caracretes(36bytes)=80*/
     return novo_no;
 }
 
@@ -88,12 +94,14 @@ void* adicionar(void* pBuffer){
     scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)));
     printf("\nIdade:");
     char idadeInput[10];
+    //vai le a entrda do nuemro que é a idade como string
     scanf(" %[^\n]", idadeInput);
     getchar();
 
     // Verifica se a entrada para idade contém apenas números
     for (int i = 0; idadeInput[i] != '\0'; i++) {
         if (idadeInput[i] < '0' || idadeInput[i] > '9') {
+            //caso nao tenha numero exibi a mensagem
             printf("\nErro: Apenas numeros sao permitidos para a idade.\n");
             printf("Pressione Enter para voltar ao menu.\n");
             getchar();
@@ -101,31 +109,37 @@ void* adicionar(void* pBuffer){
         }
     }
 
-    // Função personalizada para converter string para inteiro
+    // vai converter a string para inteiro manualmente
     int idade = 0;
     for (int i = 0; idadeInput[i] != '\0'; i++) {
+        //ira calcula o valor da idade mutiplicando por 10
         idade = idade * 10 + (idadeInput[i] - '0');
     }
+    //armazena a idade no buffer e deslocaa posiçao certa
     *(int*)(pBuffer + 3 * sizeof(void*) + 40) = idade;
     printf("\nEmail:");
     scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)+44));
     getchar();
 
     void* novo_no = criar_no(pBuffer);
+    //vai criar um novo com os dados inseridos
     void* head = *(void**)pBuffer;
+    //vai obter o primeiro no da lista
     void* tail = *(void**)(pBuffer + sizeof(void*));
+    //e aqui o ultimo no da lista
 
-    if(head==NULL){
-    *(void**)pBuffer = novo_no; // Define o novo nó como head
-    *(void**)(pBuffer + sizeof(void*)) = novo_no;
+    if(head==NULL){//caso estiver vazia o novo no sera o unico no que é o head e o tail
+    *(void**)pBuffer = novo_no; // aqui atualiza o ponteiro que é o head
+    *(void**)(pBuffer + sizeof(void*)) = novo_no; // aqui atualiza o ponteiro que é o tail
     printf("\nContato adicionado!\n");
     getchar();
     return pBuffer;
 }
-    *(void**)novo_no = NULL; // Next do novo nó aponta para NULL
-    *(void**)(novo_no + sizeof(void*)) = tail; // Prev do novo nó aponta para o tail atual
+    //aqui é outro caso caso nao estja vazia
+    *(void**)novo_no = NULL;//o ponteiro next do novo no é null, era vai ser o ultimo
+    *(void**)(novo_no + sizeof(void*)) = tail; //o  pnteiro next do novo nó vai ser configurado para o antigo tail 
     *(void**)tail = novo_no; // Tail atual aponta para o novo nó
-    *(void**)(pBuffer + sizeof(void*)) = novo_no; // Atualiza o tail no buffer principal
+    *(void**)(pBuffer + sizeof(void*)) = novo_no; // vai atualizar o tail para apontar pro novo no
 
     printf("\nContato adicionado!\n");
     getchar();
@@ -155,27 +169,36 @@ void* remover (void* pBuffer){
         getchar();
         return pBuffer;
     }
+    //caso 1:
 if (atual == *(void**)pBuffer && atual == tail) {
-        *(void**)pBuffer = NULL;  // Head = NULL
-        *(void**)(pBuffer + sizeof(void*)) = NULL;  // Tail = NULL
+        *(void**)pBuffer = NULL;
+        *(void**)(pBuffer + sizeof(void*)) = NULL; 
+    /* casao o no removido for tanto o head quanto o tail entao tem apenas um no a lsita se torna vazia pq 
+    ambos os ponteiros head e o tail estao apontando pra null*/
     }
-    // Case 2: First node
+    // Caso 2: remove primeiro no
     else if (atual == *(void**)pBuffer) {
-        *(void**)pBuffer = *(void**)atual;  // Head = atual->next
-        *(void**)(*(void**)pBuffer + sizeof(void*)) = NULL;  // New head->prev = NULL
+        *(void**)pBuffer = *(void**)atual; 
+        *(void**)(*(void**)pBuffer + sizeof(void*)) = NULL; 
+        /*se o no removido (o head) o primeiro no entao o head é atualizado pra o proximo no (atual->next).*/
     }
-    // Case 3: Last node
+    // Case 3:remove o ultimo no
     else if (atual == tail) {
         void* prev = *(void**)(atual + sizeof(void*));
-        *(void**)prev = NULL;  // prev->next = NULL
-        *(void**)(pBuffer + sizeof(void*)) = prev;  // tail = prev
+        *(void**)prev = NULL; 
+        *(void**)(pBuffer + sizeof(void*)) = prev; 
+        /*se o no removido ser o ultimo o tail entao o ponteiro next do no anteior(prev) 
+            ira se tornal null que vai ser o ultimo no da lista*/
     }
-    // Case 4: Middle node
+    // Case 4: remover o no o meio
     else {
         void* prev = *(void**)(atual + sizeof(void*));
         void* next = *(void**)atual;
-        *(void**)prev = next;  // prev->next = next
-        *(void**)(next + sizeof(void*)) = prev;  // next->prev = prev
+        *(void**)prev = next;  
+        *(void**)(next + sizeof(void*)) = prev;  
+        /* se o no estiver no meio da lista os nos prev e next sao conectado diretamente.
+        (entao o ponteiro "next" do no anterior vai ser atualizado pra apontar proximo no)*/
+        /* e o ponteiro prev do proximo no é atulizado para pontar para o no anterior*/
     }
 
     free(atual); // Libera a memória do nó
