@@ -86,7 +86,26 @@ void* adicionar(void* pBuffer){
     printf("\nNome:");
     scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)));
     printf("\nIdade:");
-    scanf(" %d",(int*)(pBuffer + 3 * sizeof(void*)+40));
+    char idadeInput[10];
+    scanf(" %[^\n]", idadeInput);
+    getchar();
+
+    // Verifica se a entrada para idade contém apenas números
+    for (int i = 0; idadeInput[i] != '\0'; i++) {
+        if (idadeInput[i] < '0' || idadeInput[i] > '9') {
+            printf("\nErro: Apenas numeros sao permitidos para a idade.\n");
+            printf("Pressione Enter para voltar ao menu.\n");
+            getchar();
+            return pBuffer;
+        }
+    }
+
+    // Função personalizada para converter string para inteiro
+    int idade = 0;
+    for (int i = 0; idadeInput[i] != '\0'; i++) {
+        idade = idade * 10 + (idadeInput[i] - '0');
+    }
+    *(int*)(pBuffer + 3 * sizeof(void*) + 40) = idade;
     printf("\nEmail:");
     scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)+44));
     getchar();
