@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 //macro que vai limpar a tela e nao deixa acumula monte de texto; o que a pessoa escolher ou fazer depois do menu é apagado e volta printa o menu denovo
 #ifdef _WIN32
     #define CLEAR "cls"
@@ -18,17 +19,18 @@ void liberar_lista(void* pBuffer);//vai libera a memoria a memoria alocada que v
 
 // função principal que começa o programa 
 int main() {
-    void* pBuffer = malloc(3 * sizeof(void*) + 80); 
-//
-    *(void**)pBuffer = NULL; // head
-    *(void**)(pBuffer + sizeof(void*)) = NULL; // tail
-    *(void**)(pBuffer + 2 * sizeof(void*)) = NULL; // nó temporário
+    void* pBuffer = malloc(3 * sizeof(void*) + 80); //80 byts para cada dado de cada no
+//3 ponteiros head,tail e um no temporario
+    *(void**)pBuffer = NULL; // head começa como null que vai dizer que esta vazia no começo
+    *(void**)(pBuffer + sizeof(void*)) = NULL; // o ponteiro tail que vai falar que a lista esta vazia 
+    *(void**)(pBuffer + 2 * sizeof(void*)) = NULL; // e o nó temporário que vai usar ele para fazer operaçoes de coloca e remover
+    
 
     while (1) {
         pBuffer = menu(pBuffer);
     }
 
-    free(pBuffer);
+    free(pBuffer);//ja libera a memoria antes de começa o codigo
     return 0;
 }
 
@@ -72,10 +74,9 @@ void* menu(void* pBuffer) {
     return pBuffer;
 }
 void* criar_no(void* pBuffer){
-     void* novo_no = malloc(2 * sizeof(void*) + 80);
+     void* novo_no = malloc(2 * sizeof(void*) + 80);// utilizamos aqui pra cria o no temporario 
     *(void**)novo_no = NULL;
     *(void**) (novo_no + sizeof (void*) ) = NULL;
-    //copia os dados de entra o nome, idade e o email
     memcpy(novo_no + 2 * sizeof(void*), pBuffer + 3 * sizeof(void*),80);
 
     return novo_no;
