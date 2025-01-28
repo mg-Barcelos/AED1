@@ -1,25 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//macro pra facilitar a limpeza do terminal
+//macro que vai limpar a tela e nao deixa acumula monte de texto; o que a pessoa escolher ou fazer depois do menu é apagado e volta printa o menu denovo
 #ifdef _WIN32
     #define CLEAR "cls"
 #else
     #define CLEAR "clear"
 #endif
+//funçoes para fazer a manipulçao da lista encadeada
+void* menu(void* pBuffer);//funçao vai exibir o menu pra a pessoa escolher
+void* criar_no(void* pBuffer);//a funçao cria um no na lista que recebe um ponteiro do buffer de dados que vai ser amarzenado no no
+void* adicionar(void* pBuffer);//vai adiciona uma pessoa em um novo no na lista
+void* remover(void* pBuffer);//vai remove uma pessoa de um no na lista. ex: ele vai utuilizar um buffer encontrar o no que quer ser removido
+void* buscar(void* pBuffer);//vai uma  procurar uma pessoa(no) na lista,vai percorrer na lista que correponde o valor daquele no
+void* listar(void* pBuffer);//vai pecorrer toda a lista e vai printa toda as pessoas que foram adicionadas
+void liberar_lista(void* pBuffer);//vai libera a memoria a memoria alocada que vai funciona para que nao tenha vazamento na memoria
 
-void* menu(void* pBuffer);
-void* criar_no(void* pBuffer);
-void* adicionar(void* pBuffer);
-void* remover(void* pBuffer);
-void* buscar(void* pBuffer);
-void* listar(void* pBuffer);
-void liberar_lista(void* pBuffer);
-
-// Função principal
+// função principal que começa o programa 
 int main() {
     void* pBuffer = malloc(3 * sizeof(void*) + 80); 
-
+//
     *(void**)pBuffer = NULL; // head
     *(void**)(pBuffer + sizeof(void*)) = NULL; // tail
     *(void**)(pBuffer + 2 * sizeof(void*)) = NULL; // nó temporário
@@ -32,7 +32,7 @@ int main() {
     return 0;
 }
 
-// Exibe o menu e direciona para a funcionalidade selecionada
+// exibe o menu pra pessao escolher o que ela quer
 void* menu(void* pBuffer) {
     system(CLEAR);
     printf("=== AGENDA ===\n");
@@ -43,26 +43,26 @@ void* menu(void* pBuffer) {
     printf("5. Sair\n");
     printf("Opcao: ");
     
-    int opcao = 0; // opção temporária para verificar o menu
+    int opcao = 0; // opção pra ferificar o menu
     scanf("%d", &opcao);
-    getchar(); // Consumir newline
+    getchar(); 
 
     switch (opcao) {
         case 1:
-            pBuffer = adicionar(pBuffer); // Adiciona uma nova pessoa
+            pBuffer = adicionar(pBuffer); // opçcao pra adiconar uma pessoa
             break;
         case 2:
-            pBuffer = remover(pBuffer); // Remove uma pessoa pelo nome
+            pBuffer = remover(pBuffer); // opçcao pra remover uma pessoa
             break;
         case 3:
-            pBuffer = buscar(pBuffer); // Busca uma pessoa pelo nome
+            pBuffer = buscar(pBuffer); // opçcao pra buscar uma pessoa
             break;
         case 4:
-            pBuffer = listar(pBuffer); // Lista todas as pessoas
+            pBuffer = listar(pBuffer); // opçcao pra listar utodas as pessoas
             break;
         case 5:
             liberar_lista(pBuffer);
-            free(pBuffer); // Libera o buffer principal
+            free(pBuffer); // vai liebrar o buffer principal
             exit(0);
         default:
             printf("Opcao invalida! Tente novamente.\n");
@@ -238,7 +238,7 @@ void* listar(void* pBuffer){
         nos[i] = temp;
         temp = *(void**)temp;//
     }
-// Ordenar os ponteiros para os nós usando bubble sort com base nos nomes
+// aqui faz uma ordenaçao dos ponteiros para os nos usando um dos "melhores" algoritmos de ordenaçao o bubble sort com base nos nomes para lista em ordem alfabetica
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
             char* nome1 = (char*)(nos[j] + 2 * sizeof(void*));
@@ -250,7 +250,6 @@ void* listar(void* pBuffer){
             }
         }
     }
-    // Exibir os contatos em ordem alfabética
     printf("\nLista de contatos:\n");
     for (int i = 0; i < count; i++) {
         printf("Nome: %s\n", (char*)(nos[i] + 2 * sizeof(void*)));
