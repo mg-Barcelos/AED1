@@ -205,6 +205,12 @@ void* buscar (void* pBuffer){
             return pBuffer;
         }
         atual = *(void**)atual;
+        
+        if (atual == NULL) { // Se não encontrado
+        printf("\nContato nao encontrado!\n");
+        getchar();
+        return pBuffer;
+        }
     }
     printf("\nContato encontrado:\n");
     getchar();
@@ -215,7 +221,7 @@ void* listar(void* pBuffer){
     void* atual = *(void**)pBuffer;
 
     if(atual == NULL){
-        printf("\n A LISTA ESTA VAZIA\n");
+        printf("\n lista vazia\n");
         getchar();
         return pBuffer;
     }
