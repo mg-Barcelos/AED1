@@ -82,9 +82,11 @@ void* criar_no(void* pBuffer){
 //funçao para adicionar uma pessoa na lista
 void* adicionar(void* pBuffer){
     printf("\nNome:");
-    scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)));
+    scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)));z
+    getchar();
     printf("\nIdade:");
-    scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)+40));
+    scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)+44));
+    getchar();
 
     int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int));
     *i = 0;
