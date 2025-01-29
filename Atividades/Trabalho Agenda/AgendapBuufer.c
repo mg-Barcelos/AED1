@@ -24,8 +24,12 @@ int main() {
     *(void**)pBuffer = NULL; // head começa como null que vai dizer que esta vazia no começo
     *(void**)(pBuffer + sizeof(void*)) = NULL; // o ponteiro tail que vai falar que a lista esta vazia 
     *(void**)(pBuffer + 2 * sizeof(void*)) = NULL; // e o nó temporário que vai usar ele para fazer operaçoes de coloca e remover
-    
 
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80) = 0; // opcao
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80) = 0; // opcao
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80) = 0; // opcao
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80) = 0; // opcao
+    
     while (1) {
         pBuffer = menu(pBuffer);
     }
@@ -277,9 +281,10 @@ quanto o temp chega no final da lista ele se tornal null, o count tem o nuemro t
             char* nome1 = (char*)(nos[j] + 2 * sizeof(void*));
             char* nome2 = (char*)(nos[j + 1] + 2 * sizeof(void*));
             if (strcmp(nome1, nome2) > 0) {
-                void* tempNode = nos[j];
-                nos[j] = nos[j + 1];
+                void* tempNode = nos[j];//o ponteiro atual é armazenado tempoaralmente em tempNode vai sevir pra nao mexe no valor atual
+                nos[j] = nos[j + 1];// o no é movimo pra essa posiçao
                 nos[j + 1] = tempNode;
+                //bem a ordenaçao funciona da seguinte maneira ordem alfabetica baseada no valor ASCII
             }
         }
     }
