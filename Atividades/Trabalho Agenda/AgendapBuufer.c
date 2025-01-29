@@ -263,8 +263,9 @@ quanto o temp chega no final da lista ele se tornal null, o count tem o nuemro t
     }
     *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) = 0;
     
-    for (int i = 0; i < count - 1; i++) {
-        for (int j = 0; j < count - i - 1; j++) {
+     for (int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int));
+         *i < *count - 1; (*i)++){
+        for (int* j = (int*); j < count - i - 1; j++) {
             char* nome1 = (char*)(nos[j] + 2 * sizeof(void*));
             char* nome2 = (char*)(nos[j + 1] + 2 * sizeof(void*));
             if (strcmp(nome1, nome2) > 0) {
