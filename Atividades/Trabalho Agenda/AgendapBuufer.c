@@ -49,11 +49,11 @@ void* menu(void* pBuffer) {
     printf("5. Sair\n");
     printf("Opcao: ");
     
-    int opcao = 0; // opção pra ferificar o menu
-    scanf("%d", &opcao);
+    int* opcaoPtr = (int*)(pBuffer + 3 * sizeof(void*) + 80);// opção pra ferificar o menu
+    scanf("%d", opcaoPtr);
     getchar(); 
 
-    switch (opcao) {
+    switch (*opcaoPtr) {
         case 1:
             pBuffer = adicionar(pBuffer); // opçcao pra adiconar uma pessoa
             break;
@@ -107,51 +107,51 @@ void* adicionar(void* pBuffer){
         if (idadeInput[i] < '0' || idadeInput[i] > '9') {
             //caso nao tenha numero exibi a mensagem
             printf("\nErro: Apenas numeros sao permitidos para a idade.\n");
-            printf("Pressione Enter para voltar ao menu.\n");
             getchar();
             return pBuffer;
         }
     }
 
     // funçao para coverter string para int
-    int idade = 0;
+   int* idadePtr = (int*)(pBuffer + 3 * sizeof(void*) + 40);
+    *idadePtr = 0;
     for (int i = 0; idadeInput[i] != '\0'; i++) {
-        //ira calcula o valor da idade mutiplicando por 10
-        idade = idade * 10 + (idadeInput[i] - '0');
+        *idadePtr = *idadePtr * 10 + (idadeInput[i] - '0');
     }
     //armazena a idade no buffer e deslocaa posiçao certa
-    *(int*)(pBuffer + 3 * sizeof(void*) + 40) = idade;
     printf("\nEmail:");
     scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)+44));
     getchar();
 
     void* novo_no = criar_no(pBuffer);
     //vai criar um novo com os dados inseridos
-    void* head = *(void**)pBuffer;
+    void** head = (void**)(pBuffer);
     //vai obter o primeiro no da lista
-    void* tail = *(void**)(pBuffer + sizeof(void*));
+    void** tail = (void**)(pBuffer + sizeof(void*));
     //e aqui o ultimo no da lista
-
-    if(head==NULL){//caso estiver vazia o novo no sera o unico no que é o head e o tail
-    *(void**)pBuffer = novo_no; // aqui atualiza o ponteiro que é o head
-    *(void**)(pBuffer + sizeof(void*)) = novo_no; // aqui atualiza o ponteiro que é o tail
+    
+    if (*head == NULL) {
+        *head = novo_no;
+        *tail = novo_no;
+    } else {
+        *(void**)novo_no = NULL;
+        *(void**)(novo_no + sizeof(void*)) = *tail;
+        *(void**)*tail = novo_no;
+        *tail = novo_no;
+    }
     printf("\nContato adicionado!\n");
     getchar();
     return pBuffer;
 }
-    //aqui é outro caso caso nao estja vazia
-    *(void**)novo_no = NULL;//o ponteiro next do novo no é null, era vai ser o ultimo
-    *(void**)(novo_no + sizeof(void*)) = tail; //o  pnteiro next do novo nó vai ser configurado para o antigo tail 
-    *(void**)tail = novo_no; // Tail atual aponta para o novo nó
-    *(void**)(pBuffer + sizeof(void*)) = novo_no; // vai atualizar o tail para apontar pro novo no
-
+    
     printf("\nContato adicionado!\n");
     getchar();
     return pBuffer;
 }
 
 void* remover (void* pBuffer){
-    if (*(void**)pBuffer == NULL) {
+    void** head = (void**)(pBuffer);
+    if (*head == NULL) {
     printf("\nA lista esta vazia! Nenhum contato para remover.\n");
     getchar();
     return pBuffer;
@@ -160,7 +160,7 @@ void* remover (void* pBuffer){
     scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
     getchar();
 
-    void* atual = *(void**)pBuffer; // Head
+    void* atual = *head
     void* tail = *(void**)(pBuffer + sizeof(void*));
     
     while (atual != NULL && strcmp((char*)(atual + 2 * sizeof(void*)), 
@@ -173,36 +173,27 @@ void* remover (void* pBuffer){
         getchar();
         return pBuffer;
     }
-    //caso 1:
-if (atual == *(void**)pBuffer && atual == tail) {
-        *(void**)pBuffer = NULL;
-        *(void**)(pBuffer + sizeof(void*)) = NULL; 
-    /* casao o no removido for tanto o head quanto o tail entao tem apenas um no a lsita se torna vazia pq 
-    ambos os ponteiros head e o tail estao apontando pra null*/
+
+    void* prev = *(void**)(atual + sizeof(void*));
+    void* next = *(void**)atual;
+
+if (atual == *head && atual == tail) {
+        *head = NULL;
+        tail = NULL;
     }
-    // Caso 2: remove primeiro no
-    else if (atual == *(void**)pBuffer) {
-        *(void**)pBuffer = *(void**)atual; 
-        *(void**)(*(void**)pBuffer + sizeof(void*)) = NULL; 
-        /*se o no removido (o head) o primeiro no entao o head é atualizado pra o proximo no (atual->next).*/
+    else if (atual == *head) {
+        *head = next;
+        *(void**)(next + sizeof(void*)) = NULL;
     }
     // Case 3:remove o ultimo no
     else if (atual == tail) {
-        void* prev = *(void**)(atual + sizeof(void*));
-        *(void**)prev = NULL; 
-        *(void**)(pBuffer + sizeof(void*)) = prev; 
-        /*se o no removido ser o ultimo o tail entao o ponteiro next do no anteior(prev) 
-            ira se tornal null que vai ser o ultimo no da lista*/
+        *(void**)prev = NULL;
+        tail = prev;
     }
     // Case 4: remover o no o meio
-    else {
-        void* prev = *(void**)(atual + sizeof(void*));
-        void* next = *(void**)atual;
-        *(void**)prev = next;  
-        *(void**)(next + sizeof(void*)) = prev;  
-        /* se o no estiver no meio da lista os nos prev e next sao conectado diretamente.
-        (entao o ponteiro "next" do no anterior vai ser atualizado pra apontar proximo no)*/
-        /* e o ponteiro prev do proximo no é atulizado para pontar para o no anterior*/
+   else {
+        *(void**)prev = next;
+        *(void**)(next + sizeof(void*)) = prev;
     }
 
     free(atual); // Libera a memória do nó
@@ -212,20 +203,20 @@ if (atual == *(void**)pBuffer && atual == tail) {
 }
 
 void* buscar (void* pBuffer){
-    if (*(void**)pBuffer == NULL) {
+    void* head = *(void**)pBuffer
+    if (head == NULL) {
     printf("\nA lista esta vazia! Nenhum contato para buscar.\n");
     getchar();
     return pBuffer;
-        //funçao verifica se a lista esta vazia se tiver exibi a mensagem
+    //funçao verifica se a lista esta vazia se tiver exibi a mensagem
 }
     printf("\nNome para Buscar: ");
     scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
     getchar();
     //funçao pro usuario digigtar o nome
 
-    void* atual = *(void**)pBuffer; // Ponteiro atual vai ser começado apontado para o primeiro da lista o (head)
+    void* atual = head; // Ponteiro atual vai ser começado apontado para o primeiro da lista o (head)
     
-
     while(atual != NULL) {
         if (strstr((char*)(atual + 2 * sizeof(void*)), (char*)(pBuffer + 3 * sizeof(void*))) != NULL) {
             printf("\nContato encontrado:\n");
@@ -238,12 +229,6 @@ void* buscar (void* pBuffer){
             vai ir ate encontra o no com o nome que a pessoa quer procurar*/
         }
         atual = *(void**)atual;
-        
-        if (atual == NULL) { // Se não encontrado caso o laço nao ache o contato
-        printf("\nContato nao encontrado!\n");
-        getchar();
-        return pBuffer;
-        }
     }
     printf("\nContato encontrado:\n");
     getchar();
@@ -252,7 +237,6 @@ void* buscar (void* pBuffer){
 
 void* listar(void* pBuffer){
     void* atual = *(void**)pBuffer;
-
     if(atual == NULL){
         printf("\n lista vazia\n");
         getchar();
@@ -261,21 +245,24 @@ void* listar(void* pBuffer){
     }
 /*abaixo o ponteiro temp é usado pra pecorrer alista iniciado pelo head o count o contator para cada no visitado
 quanto o temp chega no final da lista ele se tornal null, o count tem o nuemro total de nos da lista*/
-    int count=0;
+    int* count = (int*)(pBuffer + 3 * sizeof(void*) + 80 + sizeof(int));
+    *count = 0;
     void* temp = atual;
     while (temp != NULL){
-        count++;
+        (*count)++;
         temp = *(void**)temp;
     }
-    void** nos = malloc(count * sizeof(void*));//array dinamica chama nos para armazenar todo os nos da lista
+    void** nos = malloc(*count * sizeof(void*));//array dinamica chama nos para armazenar todo os nos da lista
     temp = atual;
-    for(int i =0;i<count;i++){
-        nos[i] = temp;
+    for (int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)); 
+         *i < *count; (*i)++) {
+        nos[*i] = temp;
         temp = *(void**)temp;
         /*aqui o ponteiro temp é reinicializado para o head,entra no for o pont temp é armazenado no nos[i] do array
         e por fim o temp é atualizado para o proximo no acessado por *(void**)temp.*/
     }
-// aqui faz uma ordenaçao dos ponteiros para os nos, usando um dos "melhores" algoritmos de ordenaçao o bubble sort com base nos nomes para lista em ordem alfabetica
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) = 0;
+    
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
             char* nome1 = (char*)(nos[j] + 2 * sizeof(void*));
