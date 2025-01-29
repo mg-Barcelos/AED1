@@ -19,14 +19,14 @@ void liberar_lista(void* pBuffer);//vai libera a memoria a memoria alocada que v
 
 // função principal que começa o programa 
 int main() {
-    void* pBuffer = malloc(3 * sizeof(void*) + 80); //80 byts para cada dado de cada no
+    void* pBuffer = malloc(3 * sizeof(void*) + 80+4* sizeof(int)); 
 //3 ponteiros head,tail e um no temporario
     *(void**)pBuffer = NULL; // head começa como null que vai dizer que esta vazia no começo
     *(void**)(pBuffer + sizeof(void*)) = NULL; // o ponteiro tail que vai falar que a lista esta vazia 
     *(void**)(pBuffer + 2 * sizeof(void*)) = NULL; // e o nó temporário que vai usar ele para fazer operaçoes de coloca e remover
 
     *(int*)(pBuffer + 3 * sizeof(void*) + 80) = 0; // opcao
-    *(int*)(pBuffer + 3 * sizeof(void*) + 80  + sizeof(int)) = 0;// count
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80 + sizeof(int)) = 0;// count
     *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) = 0; //i
     *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 3 * sizeof(int)) = 0; //j
     
@@ -54,18 +54,10 @@ void* menu(void* pBuffer) {
     getchar(); 
 
     switch (*opcaoPtr) {
-        case 1:
-            pBuffer = adicionar(pBuffer); // opçcao pra adiconar uma pessoa
-            break;
-        case 2:
-            pBuffer = remover(pBuffer); // opçcao pra remover uma pessoa
-            break;
-        case 3:
-            pBuffer = buscar(pBuffer); // opçcao pra buscar uma pessoa
-            break;
-        case 4:
-            pBuffer = listar(pBuffer); // opçcao pra listar utodas as pessoas
-            break;
+        case 1:return pBuffer = adicionar(pBuffer); // opçcao pra adiconar uma pessoa
+        case 2:return pBuffer = remover(pBuffer); // opçcao pra remover uma pessoa
+        case 3:return pBuffer = buscar(pBuffer); // opçcao pra buscar uma pessoa
+        case 4:return pBuffer = listar(pBuffer); // opçcao pra listar utodas as pessoas
         case 5:
             liberar_lista(pBuffer);
             free(pBuffer); // vai liebrar o buffer principal
@@ -73,9 +65,10 @@ void* menu(void* pBuffer) {
         default:
             printf("Opcao invalida! Tente novamente.\n");
             getchar();
+            return pBuffer;
     }
 
-    return pBuffer;
+    
 }
 void* criar_no(void* pBuffer){
      void* novo_no = malloc(2 * sizeof(void*) + 80);
@@ -143,11 +136,6 @@ void* adicionar(void* pBuffer){
     getchar();
     return pBuffer;
 }
-    
-    printf("\nContato adicionado!\n");
-    getchar();
-    return pBuffer;
-}
 
 void* remover (void* pBuffer){
     void** head = (void**)(pBuffer);
@@ -160,7 +148,7 @@ void* remover (void* pBuffer){
     scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
     getchar();
 
-    void* atual = *head
+    void* atual = *head;
     void* tail = *(void**)(pBuffer + sizeof(void*));
     
     while (atual != NULL && strcmp((char*)(atual + 2 * sizeof(void*)), 
@@ -203,7 +191,7 @@ if (atual == *head && atual == tail) {
 }
 
 void* buscar (void* pBuffer){
-    void* head = *(void**)pBuffer
+    void* head = *(void**)pBuffer;
     if (head == NULL) {
     printf("\nA lista esta vazia! Nenhum contato para buscar.\n");
     getchar();
@@ -254,8 +242,7 @@ quanto o temp chega no final da lista ele se tornal null, o count tem o nuemro t
     }
     void** nos = malloc(*count * sizeof(void*));//array dinamica chama nos para armazenar todo os nos da lista
     temp = atual;
-    for (int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)); 
-         *i < *count; (*i)++) {
+    for (int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)); *i < *count; (*i)++) {
         nos[*i] = temp;
         temp = *(void**)temp;
         /*aqui o ponteiro temp é reinicializado para o head,entra no for o pont temp é armazenado no nos[i] do array
@@ -263,36 +250,37 @@ quanto o temp chega no final da lista ele se tornal null, o count tem o nuemro t
     }
     *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) = 0;
     
-     for (int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int));
-         *i < *count - 1; (*i)++){
-        for (int* j = (int*); j < count - i - 1; j++) {
-            char* nome1 = (char*)(nos[j] + 2 * sizeof(void*));
-            char* nome2 = (char*)(nos[j + 1] + 2 * sizeof(void*));
+     for (int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int));*i < *count - 1; (*i)++){
+        for (int* j = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 3 * sizeof(int));*j < *count - *i - 1; (*j)++){
+            char* nome1 = (char*)(nos[*j] + 2 * sizeof(void*));
+            char* nome2 = (char*)(nos[*j + 1] + 2 * sizeof(void*));
             if (strcmp(nome1, nome2) > 0) {
-                void* tempNode = nos[j];//o ponteiro atual é armazenado tempoaralmente em tempNode vai sevir pra nao mexe no valor atual
-                nos[j] = nos[j + 1];// o no é movimo pra essa posiçao
-                nos[j + 1] = tempNode;
+                void* tempNode = nos[*j];//o ponteiro atual é armazenado tempoaralmente em tempNode vai sevir pra nao mexe no valor atual
+                nos[*j] = nos[*j + 1];// o no é movimo pra essa posiçao
+                nos[*j + 1] = tempNode;
                 //bem a ordenaçao funciona da seguinte maneira ordem alfabetica baseada no valor ASCII
             }
         }
+        *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 3 * sizeof(int)) = 0;
     }
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) = 0;
+    
     printf("\nLista de contatos:\n");
-    for (int i = 0; i < count; i++) {
-        printf("Nome: %s\n", (char*)(nos[i] + 2 * sizeof(void*)));
-        printf("Idade: %d\n", *(int*)(nos[i] + 2 * sizeof(void*) + 40));
-        printf("Email: %s\n", (char*)(nos[i] + 2 * sizeof(void*) + 44));
+    for (int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int));*i < *count; (*i)++)  {
+        printf("Nome: %s\n", (char*)(nos[*i] + 2 * sizeof(void*)));
+        printf("Idade: %d\n", *(int*)(nos[*i] + 2 * sizeof(void*) + 40));
+        printf("Email: %s\n", (char*)(nos[*i] + 2 * sizeof(void*) + 44));
         printf("----------------\n");
     }
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) = 0;
 
     free(nos); //os nos é liberado para nao ter vazamento de memoria
-
     getchar();
     return pBuffer;
 }
 
 void liberar_lista(void* pBuffer){
     void* atual = *(void**)pBuffer;
-
     while (atual != NULL){
         void* temp = atual;
         atual = *(void**)atual;
