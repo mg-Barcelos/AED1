@@ -72,16 +72,10 @@ void* menu(void* pBuffer) {
 }
 void* criar_no(void* pBuffer){
      void* novo_no = malloc(2 * sizeof(void*) + 80);
-    // utilizamos aqui pra cria o no temporario 
     *(void**)novo_no = NULL; 
-    //aqui o ponteiro começa next do novo no como null (ou seja nao vai apontar pra nenhum outro no no momento)
     *(void**) (novo_no + sizeof (void*) ) = NULL; 
-    // mesma coisa vai começa o ponteiro prev do no como null (entao nao vai ter nada antes)
     memcpy(novo_no + 2 * sizeof(void*), pBuffer + 3 * sizeof(void*),80);
-    /*aqui vai fazer nada mais que copia os dados que sao (nome,idade,email) do buffer para
-    um novo no, os dados comecam a partir do pBuffer + 3 * sizeof(void*) é onde os dados estao armazenados*/
-    /*valor 80 é o nuemro de bytes apra ser copiado que sao o tamanho dos dados o valor 80 é assumindo que o nome tenha 39 carectes(40bytes)
-    idade nuemro inteiro(4bytes) e email assumindo que tenha 35 caracretes(36bytes)=80*/
+    
     return novo_no;
 }
 
@@ -90,27 +84,29 @@ void* adicionar(void* pBuffer){
     printf("\nNome:");
     scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)));
     printf("\nIdade:");
-    char idadeInput[10];
-    //vai le a entrda do nuemro que é a idade como string
-    scanf(" %[^\n]", idadeInput);
-    getchar();
+    scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)+40));
 
-    // Verifica se a entrada para idade contém apenas números
-    for (int i = 0; idadeInput[i] != '\0'; i++) {
-        if (idadeInput[i] < '0' || idadeInput[i] > '9') {
-            //caso nao tenha numero exibi a mensagem
+    int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int));
+    *i = 0;
+    char* age_str = (char*)(pBuffer + 3 * sizeof(void*) + 44);
+    while (age_str[*i] != '\0') {
+        if (age_str[*i] < '0' || age_str[*i] > '9') {
             printf("\nErro: Apenas numeros sao permitidos para a idade.\n");
             getchar();
+            *i = 0;
             return pBuffer;
         }
+        (*i)++;
     }
+    *i = 0;
 
-    // funçao para coverter string para int
-   int* idadePtr = (int*)(pBuffer + 3 * sizeof(void*) + 40);
+    int* idadePtr = (int*)(pBuffer + 3 * sizeof(void*) + 40);
     *idadePtr = 0;
-    for (int i = 0; idadeInput[i] != '\0'; i++) {
-        *idadePtr = *idadePtr * 10 + (idadeInput[i] - '0');
+    while (age_str[*i] != '\0') {
+        *idadePtr = *idadePtr * 10 + (age_str[*i] - '0');
+        (*i)++;
     }
+    *i = 0;
     //armazena a idade no buffer e deslocaa posiçao certa
     printf("\nEmail:");
     scanf(" %[^\n]",(char*)(pBuffer + 3 * sizeof(void*)+44));
