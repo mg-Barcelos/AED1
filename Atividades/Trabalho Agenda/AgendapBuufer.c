@@ -26,9 +26,9 @@ int main() {
     *(void**)(pBuffer + 2 * sizeof(void*)) = NULL; // e o nó temporário que vai usar ele para fazer operaçoes de coloca e remover
 
     *(int*)(pBuffer + 3 * sizeof(void*) + 80) = 0; // opcao
-    *(int*)(pBuffer + 3 * sizeof(void*) + 80) = 0; // opcao
-    *(int*)(pBuffer + 3 * sizeof(void*) + 80) = 0; // opcao
-    *(int*)(pBuffer + 3 * sizeof(void*) + 80) = 0; // opcao
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80  + sizeof(int)) = 0;// count
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) = 0; //i
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 3 * sizeof(int)) = 0; //j
     
     while (1) {
         pBuffer = menu(pBuffer);
