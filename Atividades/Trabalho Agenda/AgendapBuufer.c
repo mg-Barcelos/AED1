@@ -90,9 +90,9 @@ void* adicionar(void* pBuffer){
 
     int* i = (int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int));
     *i = 0;
-    char* age_str = (char*)(pBuffer + 3 * sizeof(void*) + 44);
-    while (age_str[*i] != '\0') {
-        if (age_str[*i] < '0' || age_str[*i] > '9') {
+    char* idade_str = (char*)(pBuffer + 3 * sizeof(void*) + 44);
+    while (idade_str[*i] != '\0') {
+        if (idade_str[*i] < '0' || idade_str[*i] > '9') {
             printf("\nErro: Apenas numeros sao permitidos para a idade.\n");
             getchar();
             *i = 0;
@@ -104,8 +104,8 @@ void* adicionar(void* pBuffer){
 
     int* idadePtr = (int*)(pBuffer + 3 * sizeof(void*) + 40);
     *idadePtr = 0;
-    while (age_str[*i] != '\0') {
-        *idadePtr = *idadePtr * 10 + (age_str[*i] - '0');
+    while (idade_str[*i] != '\0') {
+        *idadePtr = *idadePtr * 10 + (idade_str[*i] - '0');
         (*i)++;
     }
     *i = 0;
@@ -204,13 +204,14 @@ void* buscar (void* pBuffer){
 
 
     void* atual = head; // Ponteiro atual vai ser começado apontado para o primeiro da lista o (head)
-     printf("\nContatos encontrados:\n");
-    
+   
+    printf("\nContatos encontrados:\n");
     while(atual != NULL) {
         if (strstr((char*)(atual + 2 * sizeof(void*)), (char*)(pBuffer + 3 * sizeof(void*))) != NULL) {
-            printf("\nNome %s\n", (char*)(atual + 2 * sizeof(void*)));
-            printf("\nIdade %d\n", *(int*)(atual + 2 * sizeof(void*)+40));
-            printf("\nNome %s\n", (char*)(atual + 2 * sizeof(void*)+44));
+            
+            printf("Nome %s\n", (char*)(atual + 2 * sizeof(void*)));
+            printf("Idade %d\n", *(int*)(atual + 2 * sizeof(void*)+40));
+            printf("Nome %s\n", (char*)(atual + 2 * sizeof(void*)+44));
             printf("----------------\n");
             /*a qui o while entra em laço de repetiçao ele vai percorrera lista apatir do head 
             vai ir ate encontra o no com o nome que a pessoa quer procurar*/
