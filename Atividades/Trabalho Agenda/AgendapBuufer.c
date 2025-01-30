@@ -198,25 +198,29 @@ void* buscar (void* pBuffer){
 }
     printf("\nNome para Buscar: ");
     scanf(" %[^\n]", (char*)(pBuffer + 3 * sizeof(void*)));
-    getchar();
-    //funçao pro usuario digigtar o nome
+    getchar();//funçao pro usuario digigtar o nome
+    
+    *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) = 0; // i = 0
+
 
     void* atual = head; // Ponteiro atual vai ser começado apontado para o primeiro da lista o (head)
+     printf("\nContatos encontrados:\n");
     
     while(atual != NULL) {
         if (strstr((char*)(atual + 2 * sizeof(void*)), (char*)(pBuffer + 3 * sizeof(void*))) != NULL) {
-            printf("\nContato encontrado:\n");
             printf("\nNome %s\n", (char*)(atual + 2 * sizeof(void*)));
             printf("\nIdade %d\n", *(int*)(atual + 2 * sizeof(void*)+40));
             printf("\nNome %s\n", (char*)(atual + 2 * sizeof(void*)+44));
-            getchar();
-            return pBuffer;
+            printf("----------------\n");
             /*a qui o while entra em laço de repetiçao ele vai percorrera lista apatir do head 
             vai ir ate encontra o no com o nome que a pessoa quer procurar*/
+            *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) = 1;
         }
         atual = *(void**)atual;
     }
-    printf("\nContato encontrado:\n");
+    if (*(int*)(pBuffer + 3 * sizeof(void*) + 80 + 2 * sizeof(int)) == 0) {
+        printf("\nNenhum contato encontrado!\n");
+    }
     getchar();
     return pBuffer;
 }
