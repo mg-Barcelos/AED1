@@ -232,7 +232,7 @@ void* listar(void* pBuffer){
         printf("\n lista vazia\n");
         getchar();
         return pBuffer;
-        //ponteiro aula aponta pro head da lista,a lista esta vazia entao retorna
+        //ponteiro atual aponta pro head da lista,a lista esta vazia entao retorna
     }
 /*abaixo o ponteiro temp é usado pra pecorrer alista iniciado pelo head o count o contator para cada no visitado
 quanto o temp chega no final da lista ele se tornal null, o count tem o nuemro total de nos da lista*/
