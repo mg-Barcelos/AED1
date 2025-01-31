@@ -8,6 +8,7 @@
 #else
     #define CLEAR "clear"
 #endif
+
 //funçoes para fazer a manipulçao da lista encadeada
 void* menu(void* pBuffer);//funçao vai exibir o menu pra a pessoa escolher
 void* criar_no(void* pBuffer);//a funçao cria um no na lista que recebe um ponteiro do buffer de dados que vai ser amarzenado no no
