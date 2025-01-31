@@ -261,7 +261,7 @@ quanto o temp chega no final da lista ele se tornal null, o count tem o nuemro t
                 void* tempNode = nos[*j];//o ponteiro atual é armazenado tempoaralmente em tempNode vai sevir pra nao mexe no valor atual
                 nos[*j] = nos[*j + 1];// o no é movimo pra essa posiçao
                 nos[*j + 1] = tempNode;
-                //bem a ordenaçao funciona da seguinte maneira ordem alfabetica baseada no valor ASCII
+                //a ordenaçao funciona da seguinte maneira ordem alfabetica baseada no valor ASCII
             }
         }
         *(int*)(pBuffer + 3 * sizeof(void*) + 80 + 3 * sizeof(int)) = 0;
