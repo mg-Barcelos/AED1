@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef _WIN32
+#ifdef WIN32
     #define CLEAR "cls"
 #else
     #define CLEAR "clear"
