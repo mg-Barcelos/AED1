@@ -5,5 +5,14 @@
 &nbsp;Regras: Nenhuma variável pode ser declarada em todo o programa, somente ponteiros. Todos os dados do programa devem ser guardados dentro do pBuffer.Nem mesmo como parâmetro de função. Só ponteiros que apontam para dentro do pBuffer.
 Exemplo do que não pode: 
 
-int c; char a; int v[10];  void Funcao(int parametro)
-Não pode usar struct em todo o programa.
+### INFO:
+###### Nome: Miguel Pereira Barcelos
+###### Matricula: 21201954
+###### Turma: M2
+##### Contato:
+###### Email: mpbarcelos@inf.ufpel.edu.br 
+###### DC:miguel_barc
+
+
+##### Link para o vídeo:
+###### <>
