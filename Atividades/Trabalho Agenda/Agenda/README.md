@@ -7,8 +7,3 @@ Exemplo do que não pode:
 
 int c; char a; int v[10];  void Funcao(int parametro)
 Não pode usar struct em todo o programa.
-
-  
-**Ferramentas de Desenvolvimento**
-
-[![My Skills](https://skillicons.dev/icons?i=vscode)](https://skillicons.dev)<br clear="both">
