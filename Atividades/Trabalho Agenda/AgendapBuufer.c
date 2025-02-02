@@ -1,3 +1,4 @@
+//codigo errado pois possui 3 malloc que nao pode
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
