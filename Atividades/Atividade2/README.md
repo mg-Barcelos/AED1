@@ -5,7 +5,7 @@
 #### Crie um sistema que gerencie o estado de reserva de assentos numerados
 
 ##### Link para o vídeo:
-###### <ghttps://drive.google.com/drive/folders/17JPGtQ2X0GeVK6rW0LwU4EJumN777LiD>
+###### <https://drive.google.com/drive/folders/17JPGtQ2X0GeVK6rW0LwU4EJumN777LiD>
 
 ### INFO:
 ###### Nome: Miguel Pereira Barcelos
