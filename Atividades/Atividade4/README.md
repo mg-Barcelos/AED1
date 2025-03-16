@@ -5,7 +5,7 @@
 ### 826. Trabalho de atribuição de maior lucro
 
 ##### Link para o vídeo:
-###### <>
+###### <https://drive.google.com/drive/folders/1NKUpP8Xl51CPvpyKYy_vItbCva6vjpuR>
 
 ### INFO:
 ###### Nome: Miguel Pereira Barcelos
